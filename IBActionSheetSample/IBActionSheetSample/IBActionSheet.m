@@ -359,10 +359,14 @@ CGRect adjustedScreenBounds()
     float width = CGRectGetWidth(adjustedScreenBounds());
     
     CGFloat bottomPadding = 0;
+    BOOL detectionOpenLaunchScreenFile = width > 320 ? YES : NO;
     
     if (@available(iOS 11.0, *)) {
-        UIWindow *window = UIApplication.sharedApplication.keyWindow;
-        bottomPadding = window.safeAreaInsets.bottom;
+        // 如果沒有支援4吋以上的營幕的話不用考慮safe area
+        if (detectionOpenLaunchScreenFile) {
+            UIWindow *window = UIApplication.sharedApplication.keyWindow;
+            bottomPadding = window.safeAreaInsets.bottom;
+        }
     }
     
     // slight adjustment to take into account non-retina devices
