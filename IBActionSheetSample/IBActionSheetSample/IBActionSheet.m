@@ -358,6 +358,13 @@ CGRect adjustedScreenBounds()
     float height;
     float width = CGRectGetWidth(adjustedScreenBounds());
     
+    CGFloat bottomPadding = 0;
+    
+    if (@available(iOS 11.0, *)) {
+        UIWindow *window = UIApplication.sharedApplication.keyWindow;
+        bottomPadding = window.safeAreaInsets.bottom;
+    }
+    
     // slight adjustment to take into account non-retina devices
     if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]
         && [[UIScreen mainScreen] scale] == 2.0) {
@@ -378,10 +385,10 @@ CGRect adjustedScreenBounds()
             height += CGRectGetHeight(self.titleView.frame) - 44;
         }
         
-        self.frame = CGRectMake(0, 0, width, height);
+        self.frame = CGRectMake(0, 0, width, height + bottomPadding);
         [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         
-        CGPoint pointOfReference = CGPointMake(CGRectGetWidth(self.frame) / 2.0, CGRectGetHeight(self.frame) - 30);
+        CGPoint pointOfReference = CGPointMake(CGRectGetWidth(self.frame) / 2.0, CGRectGetHeight(self.frame) - 30 - bottomPadding);
         
         int whereToStop;
         if (self.hasCancelButton) {
@@ -423,10 +430,10 @@ CGRect adjustedScreenBounds()
             height += CGRectGetHeight(self.titleView.frame) - 45;
         }
         
-        self.frame = CGRectMake(0, 0, width, height);
+        self.frame = CGRectMake(0, 0, width, height + bottomPadding);
         [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         
-        CGPoint pointOfReference = CGPointMake(CGRectGetWidth(self.frame) / 2.0, CGRectGetHeight(self.frame) - 30);
+        CGPoint pointOfReference = CGPointMake(CGRectGetWidth(self.frame) / 2.0, CGRectGetHeight(self.frame) - 30 - bottomPadding);
         
         int whereToStop;
         if (self.hasCancelButton) {
